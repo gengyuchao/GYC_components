@@ -2,8 +2,11 @@
 由我自己开发的ESP-IDF的功能组成部分
 
 *创建人 gengyuchao
+
 *创建时间 2019/2/16
-*内容说明:
+
+*内容说明:支持ESP8266_RTOSV3.0库
+
 
  由于自己经常需要使用OLED屏幕，所以把在ESP8266上使用的驱动程序稍作整理，方便需要时使用
 
@@ -50,3 +53,11 @@
  
  5、spi_oled 是使用esp_idf中提供的spi接口作为oled的spi驱动
  
+ 
+ #printf 添加浮点数支持
+ 文件：
+  -printf with float
+    ets_printf.c
+  文件替换掉原有的ets_printf.c 即可实现printf对浮点数的支持。使用方法同C语言中printf中的%f使用方法。
+  
+  
