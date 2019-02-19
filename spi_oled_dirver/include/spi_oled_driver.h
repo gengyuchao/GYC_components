@@ -18,11 +18,11 @@
 
 
 
-// D5 -> CLK GPIO14
-// D7 -> MOSI (DOUT) GPIO13
-// D0 -> RES GPIO16
-// D2 -> DC GPIO4
-// D8 -> CS GPIO15
+// D5 -> CLK(OLED_D0)           GPIO14         
+// D7 -> MOSI(OLED_D1) (DOUT)   GPIO13 
+// D0 -> RES                    GPIO16
+// D2 -> DC                     GPIO4
+// D8 -> CS                     GPIO15
 
 #define OLED_DC_GPIO     4
 #define OLED_RST_GPIO    16
