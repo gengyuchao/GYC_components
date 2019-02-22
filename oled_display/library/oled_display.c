@@ -550,7 +550,14 @@ void oled_mirrorScreen() {
 }
 
 void oled_clear_dispaly_image(void) {
-  memset(dispaly_image_buffer, 0, displayBufferSize);
+  if(dispaly_image_buffer!=NULL) 
+  {
+    memset(dispaly_image_buffer, 0, displayBufferSize);    
+  }
+  else
+  {
+    DEBUG_OLEDDISPLAY("[OLEDDISPLAY][init] Not init display\n");
+  }
 }
 
 void drawString(int16_t xMove, int16_t yMove, char* UserStr) {
