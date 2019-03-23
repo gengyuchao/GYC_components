@@ -7,6 +7,7 @@
 
 *内容说明:支持ESP8266_RTOSV3.0库
 
+# OLED 屏幕驱动和图形绘制
 
  由于自己经常需要使用OLED屏幕，所以把在ESP8266上使用的驱动程序稍作整理，方便需要时使用
 
@@ -14,33 +15,38 @@
 
   -component
   
-     -i2c_oled                   #oled驱动（任选一个）
-         -README.md
+     -i2c_oled_driver                   #oled驱动（任选一个）
          -component.mk
          -CMakeLists.txt
          -include
+            -i2c_oled_driver.h
          -library
+            i2c_oled_driver.c
 
-     -i2c_oled(offical i2c)      #oled驱动（任选一个）
-         -README.md
+     -i2c_oled_driver(offical i2c)      #oled驱动（任选一个）
          -component.mk
          -CMakeLists.txt
          -include
+            -i2c_oled_driver.h
          -library
+            -i2c_oled_driver.c
 
-     -spi_oled                   #oled驱动（任选一个）
-         -README.md
+     -spi_oled_dirver                   #oled驱动（任选一个）
          -component.mk
          -CMakeLists.txt
          -include
+            -spi_oled_driver.h
          -library
+            spi_oled_driver.c
 
      -oled_display               #必须
-         -README.md
          -component.mk
          -CMakeLists.txt
          -include
+            -oled_display.h
+            -OLEDDisplayFonts.h
          -library
+            -oled_display.c
 
  使用方法：
  1、oled_display为oled屏幕绘图、绘制字符函数库
@@ -60,7 +66,21 @@
  
   -printf with float
     ets_printf.c
+    ets_sprintf.c
     
   文件替换掉原有的ets_printf.c 即可实现printf对浮点数的支持。使用方法同C语言中printf中的%f使用方法。
+  添加ets_sprintf.c文件，使用ets_sprintf函数 即可实现sprintf对浮点数的支持。使用方法同C语言中sprintf中的%f使用方法。
+
   
-  
+ # 超声波传感器驱动 HC_SR04
+
+ 文件：
+
+  -driver_HC_SR04
+    -component.mk
+    -CMakeLists.txt
+    -include
+        -driver_HC_SR04.h
+    -library
+        -driver_HC_SR04.c
+
