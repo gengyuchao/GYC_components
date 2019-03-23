@@ -15,7 +15,7 @@ The functional components of ESP-IDF developed by myself
 
   -component
   
-     -i2c_oled_driver #oled driver (optional one)
+     -i2c_oled_driver                   #oled driver (optional one)
          -component.mk
          -CMakeLists.txt
          -include
@@ -23,7 +23,7 @@ The functional components of ESP-IDF developed by myself
          -library
             i2c_oled_driver.c
 
-     -i2c_oled_driver(offical i2c) #oled driver (optional one)
+     -i2c_oled_driver(offical i2c)      #oled driver (optional one)
          -component.mk
          -CMakeLists.txt
          -include
@@ -31,7 +31,7 @@ The functional components of ESP-IDF developed by myself
          -library
             -i2c_oled_driver.c
 
-     -spi_oled_dirver #oled driver (optional one)
+     -spi_oled_dirver                   #oled driver (optional one)
          -component.mk
          -CMakeLists.txt
          -include
@@ -39,7 +39,7 @@ The functional components of ESP-IDF developed by myself
          -library
             spi_oled_driver.c
 
-     -oled_display #Must
+     -oled_display                      #Must
          -component.mk
          -CMakeLists.txt
          -include
@@ -70,16 +70,16 @@ The functional components of ESP-IDF developed by myself
     
  Filef replaces the original ets_printf.c to achieve printf support for floating point numbers. Use the same method as %f in printf in C language.
  Add the ets_sprintf.c file and use ets_sprintf to implement sprintf support for floating point numbers. Use the same method as %f in sprintf in C language.
- 
+
 # ultrasonic sensor drive HC_SR04
 
   file:
 
-  -driver_HC_SR04
-    -component.mk
-    -CMakeLists.txt
-    -include
-        -driver_HC_SR04.h
-    -library
-        -driver_HC_SR04.c
+     -driver_HC_SR04
+         -component.mk
+         -CMakeLists.txt
+         -include
+             -driver_HC_SR04.h
+         -library
+            -driver_HC_SR04.c
 

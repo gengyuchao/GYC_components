@@ -76,11 +76,11 @@
 
  文件：
 
-  -driver_HC_SR04
-    -component.mk
-    -CMakeLists.txt
-    -include
-        -driver_HC_SR04.h
-    -library
-        -driver_HC_SR04.c
+     -driver_HC_SR04
+         -component.mk
+         -CMakeLists.txt
+         -include
+             -driver_HC_SR04.h
+         -library
+            -driver_HC_SR04.c
 
