@@ -53,7 +53,7 @@ int __attribute__ ((weak)) ets_putc(int c)
 
     return c;
 }
-#define CONFIG_USING_NEW_ETS_VPRINTF
+
 #if defined(CONFIG_USING_NEW_ETS_VPRINTF) && !defined(BOOTLOADER_BUILD)
 
 #define FILL_0      0x01
@@ -70,7 +70,7 @@ typedef union _val_cache {
     int32_t         val32;
     uint32_t        val32u;
     const char      *valcp;
-    double           valfloat;
+    double          valfloat;
 } val_cache_t;
 
 typedef struct _val_attr {
@@ -159,6 +159,7 @@ static int ets_printf_int(val_attr_t * const attr, uint8_t hex)
         ets_printf_buf(&buf[offset], VINT_STR_MAX - offset);
 
         if (isfill_left(attr)) {
+            fill_data = ' ';
             ets_printf_ch_mutlti(fill_data, left);
         }
     } else {
@@ -240,6 +241,7 @@ static int ets_printf_float(val_attr_t * const attr)
         ets_printf_buf(&buf[offset], VFLOAT_STR_MAX - offset);
 
         if (isfill_left(attr)) {
+            fill_data = ' ';
             ets_printf_ch_mutlti(fill_data, left);
         }
     } else {
@@ -286,7 +288,7 @@ int ets_vprintf(const char *fmt, va_list va)
                     ps++;
                     break;
                 case '0'...'9':
-                    if (!isstart(&attr) && *ps == '0') {
+                    if ((!isstart(&attr) || *(ps - 1) == '-') && *ps == '0') {
                         attr.state |= FILL_0;
                     } else {
                         if (attr.state & POINTOR)
@@ -339,6 +341,7 @@ int ets_vprintf(const char *fmt, va_list va)
                 ets_printf_int(&attr, 16);
                 break;
             case 'p':
+                ets_printf_buf("0x", 2);
                 attr.value.valcp = va_arg(va, const char *);
                 ets_printf_int(&attr, 16);
                 break;
