@@ -23,17 +23,11 @@
 
 #define byte char
 
-enum OLEDDISPLAY_TEXT_ALIGNMENT {
-  TEXT_ALIGN_LEFT = 0,           // 输入坐标为左起点
-  TEXT_ALIGN_RIGHT = 1,          // 输入坐标为右起点
-  TEXT_ALIGN_CENTER = 2,         // 输入坐标为水平中心
-  TEXT_ALIGN_CENTER_BOTH = 3     // 输入坐标为整个字符串的水平和垂直中心
-};
 
 // #define OLED_FILL_TEXT_BAKCGROUND
 
-uint16_t  displayWidth                     = 128;
-uint16_t  displayHeight                    = 64;
+uint16_t const displayWidth                = 128;
+uint16_t const displayHeight               = 64;
 uint16_t  displayBufferSize                = 1024;
 uint8_t   *dispaly_image_buffer            = NULL;
 uint8_t   *dispaly_image_buffer_back       = NULL;
@@ -639,14 +633,14 @@ void drawStringInternal(int16_t xMove, int16_t yMove, char* text, uint16_t textL
       if (!(msbJumpToChar == 255 && lsbJumpToChar == 255)) {
         // Get the position of the char data
         uint16_t charDataPosition = JUMPTABLE_START + sizeOfJumpTable + ((msbJumpToChar << 8) + lsbJumpToChar);
-        #ifdef OLED_FILL_TEXT_BAKCGROUND //Not Use,because clear the whole screen
+        #ifdef OLED_FILL_TEXT_BAKCGROUND //Not use,because Will affect the upper and lower lines of text,you can clear the whole screen 
           if((oled_pen_color&0x02)!=1)
             oled_pen_color = !oled_pen_color;
           fillRect(xPos, yPos-1, currentCharWidth, textHeight);
           if((oled_pen_color&0x02)!=1)
             oled_pen_color = !oled_pen_color;
           //drawRect(xPos, yPos, currentCharWidth, textHeight);
-        #endif
+        #endif     
         drawInternal(xPos, yPos, currentCharWidth, textHeight, fontData, charDataPosition, charByteSize);
       }
 
@@ -802,5 +796,20 @@ void display(void)
     }
 
  #endif
+}
+
+//添加使用页地址模式的SSH1106 
+void displaySSH1106()
+{
+	unsigned char i;
+
+	for(i=0;i<8;i++)
+	{
+    oled_write_cmd(0xb0 + i);
+    oled_write_cmd(((0x00 & 0xf0) >> 4) | 0x10);
+    oled_write_cmd(0x02 & 0x0f);//起始地址从2开始 因为SSH1106水平是132个点 但是OLED屏幕是128点 所以显示要从2开始
+
+    for(int n=0;n<128;n++)	oled_write_byte(dispaly_image_buffer[i*128+n]); //写0x00到屏幕寄存器上
+	}
 }
 

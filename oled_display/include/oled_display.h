@@ -1,4 +1,6 @@
 
+#ifndef __OLED_DISPLAY_H__
+#define __OLED_DISPLAY_H__
 
 #include <stdio.h>
 
@@ -31,6 +33,15 @@ enum OLED_Font_Size
   Plain_24 = 24
 };
 
+enum OLEDDISPLAY_TEXT_ALIGNMENT {
+  TEXT_ALIGN_LEFT = 0,           // 输入坐标为左起点
+  TEXT_ALIGN_RIGHT = 1,          // 输入坐标为右起点
+  TEXT_ALIGN_CENTER = 2,         // 输入坐标为水平中心
+  TEXT_ALIGN_CENTER_BOTH = 3     // 输入坐标为整个字符串的水平和垂直中心
+};
+extern uint8_t textAlignment ;
+extern const uint16_t  displayWidth;
+extern const uint16_t  displayHeight;
 
 // Display commands
 #define CHARGEPUMP 0x8D
@@ -73,6 +84,7 @@ enum OLED_Font_Size
   void IRAM_ATTR spi_event_callback(int event, void *arg);
 
   void display();
+  void displaySSH1106();
 
   void setPixel(int16_t x, int16_t y) ;
 
@@ -96,4 +108,8 @@ enum OLED_Font_Size
   void oled_setContrast(uint8_t contrast, uint8_t precharge, uint8_t comdetect);
   void oled_setBrightness(uint8_t brightness);
   void oled_setFontSize(uint8_t font_Size/*Plain_10 , Plain_16 , Plain_24*/);
+  void oled_setTextAlignment(uint8_t _textAlignment/*OLEDDISPLAY_TEXT_ALIGNMENT*/);
+
+
+#endif
 
