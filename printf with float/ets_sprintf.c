@@ -70,7 +70,7 @@ typedef union _val_cache {
     int32_t         val32;
     uint32_t        val32u;
     const char      *valcp;
-    double           valfloat;
+    double          valfloat;
 } val_cache_t;
 
 typedef struct _val_attr {
@@ -161,6 +161,7 @@ static char * ets_sprintf_int(char* buffer,val_attr_t * const attr, uint8_t hex)
         buffer=ets_sprintf_buf(buffer,&buf[offset], VINT_STR_MAX - offset);
 
         if (isfill_left(attr)) {
+            fill_data = ' ';
             buffer=ets_sprintf_ch_mutlti(buffer,fill_data, left);
         }
     } else {
@@ -242,6 +243,7 @@ static char * ets_sprintf_float(char *buffer ,val_attr_t * const attr)
         buffer = ets_sprintf_buf(buffer,&buf[offset], VFLOAT_STR_MAX - offset);
 
         if (isfill_left(attr)) {
+            fill_data = ' ';
             buffer = ets_sprintf_ch_mutlti(buffer,fill_data, left);
         }
     } else {
@@ -288,7 +290,7 @@ int ets_vsprintf(char *buffer ,const char *fmt, va_list va)
                     ps++;
                     break;
                 case '0'...'9':
-                    if (!isstart(&attr) && *ps == '0') {
+                    if ((!isstart(&attr) || *(ps - 1) == '-') && *ps == '0') {
                         attr.state |= FILL_0;
                     } else {
                         if (attr.state & POINTOR)
