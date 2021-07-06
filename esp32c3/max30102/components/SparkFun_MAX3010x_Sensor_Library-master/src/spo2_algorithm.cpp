@@ -59,6 +59,10 @@
 
 // #include "Arduino.h"
 #include "esp_system.h"
+
+#define min(a,b) ((a)<(b)?(a):(b))
+#define max(a,b) ((a)>(b)?(a):(b))
+
 #include "spo2_algorithm.h"
 
 #if defined(__AVR_ATmega328P__) || defined(__AVR_ATmega168__)

@@ -62,8 +62,9 @@
 #ifndef SPO2_ALGORITHM_H_
 #define SPO2_ALGORITHM_H_
 
-#include <Arduino.h>
-
+// #include <Arduino.h>
+ #include "esp_system.h"
+ 
 #define FreqS 25    //sampling frequency
 #define BUFFER_SIZE (FreqS * 4) 
 #define MA4_SIZE 4 // DONOT CHANGE

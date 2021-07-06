@@ -16,6 +16,8 @@
 #else
 //  #include "WProgram.h"
  #include "esp_system.h"
+ typedef uint8_t byte;
+ #include "string.h"
 #endif
 
 #include <Wire.h>
@@ -41,7 +43,7 @@
 
   //The catch-all default is 32
   #define I2C_BUFFER_LENGTH 32
-
+  typedef int32_t boolean;
 #endif
 
 class MAX30105 {
