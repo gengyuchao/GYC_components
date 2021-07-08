@@ -1,0 +1,37 @@
+diff --git a/components/driver/i2c.c b/components/driver/i2c.c
+index be02266a7a..de2bee7137 100644
+--- a/components/driver/i2c.c
++++ b/components/driver/i2c.c
+@@ -211,7 +211,7 @@ static i2c_clk_alloc_t i2c_clk_alloc[I2C_SCLK_MAX] = {
+ static i2c_obj_t *p_i2c_obj[I2C_NUM_MAX] = {0};
+ static void i2c_isr_handler_default(void *arg);
+ static void IRAM_ATTR i2c_master_cmd_begin_static(i2c_port_t i2c_num);
+-static esp_err_t IRAM_ATTR i2c_hw_fsm_reset(i2c_port_t i2c_num);
++esp_err_t IRAM_ATTR i2c_hw_fsm_reset(i2c_port_t i2c_num);
+ 
+ static void i2c_hw_disable(i2c_port_t i2c_num)
+ {
+@@ -596,7 +596,7 @@ static esp_err_t i2c_master_clear_bus(i2c_port_t i2c_num)
+  * If we remove the power supply for the slave during I2C is reading, or directly connect SDA or SCL to ground,
+  * this would cause the I2C FSM get stuck in wrong state, all we can do is to reset the I2C hardware in this case.
+  **/
+-static esp_err_t i2c_hw_fsm_reset(i2c_port_t i2c_num)
++esp_err_t i2c_hw_fsm_reset(i2c_port_t i2c_num)
+ {
+ #if !SOC_I2C_SUPPORT_HW_FSM_RST
+     int scl_low_period, scl_high_period;
+@@ -1320,8 +1320,13 @@ static void IRAM_ATTR i2c_master_cmd_begin_static(i2c_port_t i2c_num)
+             i2c_hal_enable_master_tx_it(&(i2c_context[i2c_num].hal));
+             p_i2c->cmd_idx = 0;
+             if (i2c_cmd_is_single_byte(cmd) || cmd->total_bytes == cmd->bytes_used) {
++                // ESP_LOGI("GYC_TEST","p_i2c->cmd_link.head is %p;",p_i2c->cmd_link.head);
+                 p_i2c->cmd_link.head = p_i2c->cmd_link.head->next;
+-                p_i2c->cmd_link.head->cmd.bytes_used = 0;
++                if(p_i2c->cmd_link.head != NULL){
++                    p_i2c->cmd_link.head->cmd.bytes_used = 0;
++                } else {
++                    //ets_printf("p_i2c->cmd_link.head is null;");
++                }
+             }
+             p_i2c->status = I2C_STATUS_WRITE;
+             break;
