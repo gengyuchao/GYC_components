@@ -153,6 +153,7 @@ boolean MAX30105::begin(TwoWire &wirePort, uint32_t i2cSpeed, uint8_t i2caddr) {
   if (readPartID() != MAX_30105_EXPECTEDPARTID) {
     // Error -- Part ID read from MAX30105 does not match expected part ID.
     // This may mean there is a physical connectivity problem (broken wire, unpowered, etc).
+    printf("Get ID:%d,expect:%d\n",readPartID(),MAX_30105_EXPECTEDPARTID);
     return false;
   }
 

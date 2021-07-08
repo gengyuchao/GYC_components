@@ -28,13 +28,15 @@ extern "C" {
 #include <inttypes.h>
 }
 
-#include "esp_log.h"
-#define log_e(...) ESP_LOGE("WIRE",__VA_ARGS__)
+#include "esp_system.h"
+
 #include "Wire.h"
 
-#define SDA 4 //Default SDA
-#define SCL 5 //Default SDA
+#define SDA 8
+#define SCL 9
 
+#include "esp_log.h"
+#define log_e(...) ESP_LOGE("WIRE",__VA_ARGS__)
 
 // #include "Arduino.h"
 
@@ -42,7 +44,7 @@ TwoWire::TwoWire(uint8_t bus_num)
     :num(bus_num & 1)
     ,sda(-1)
     ,scl(-1)
-    ,i2c(-1)
+    ,i2c(NULL)
     ,rxIndex(0)
     ,rxLength(0)
     ,rxQueued(0)
@@ -60,19 +62,8 @@ TwoWire::~TwoWire()
     flush();
     if(i2c) {
         i2cRelease(i2c);
-        i2c=-1;
+        i2c=NULL;
     }
-}
-
-bool TwoWire::setPins(int sdaPin, int sclPin)
-{
-    if(i2c) {
-        log_e("can not set pins if begin was already called");
-        return false;
-    }
-    sda = sdaPin;
-    scl = sclPin;
-    return true;
 }
 
 bool TwoWire::begin(int sdaPin, int sclPin, uint32_t frequency)
@@ -380,9 +371,9 @@ uint32_t TwoWire::setDebugFlags( uint32_t setBits, uint32_t resetBits){
   return i2cDebug(i2c,setBits,resetBits);
 }
 
-bool TwoWire::busy(void){
-  return ((i2cGetStatus(i2c) & 16 )==16);
-}
+// bool TwoWire::busy(void){
+//   return ((i2cGetStatus(i2c) & 16 )==16);
+// }
 
 TwoWire Wire = TwoWire(0);
 TwoWire Wire1 = TwoWire(1);
