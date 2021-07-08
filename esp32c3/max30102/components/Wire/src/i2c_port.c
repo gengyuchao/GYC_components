@@ -87,7 +87,7 @@ i2c_t * i2cInit(uint8_t i2c_num, int8_t sda, int8_t scl, uint32_t clk_speed){
     ESP_LOGI(TAG,"%s:init success!SCL:%d,SDA:%d\n",__func__,i2c->cfg.scl_io_num,i2c->cfg.sda_io_num);
     return i2c;
 error:
-    ESP_LOGE(TAG,"%s:%d\n",__func__,esp_err_to_name(err));
+    ESP_LOGE(TAG,"%s:%s\n",__func__,esp_err_to_name(err));
     if(i2c != NULL) {
         free(i2c);
         i2c = NULL;
@@ -109,6 +109,7 @@ void i2cRelease(i2c_t *i2c){// free ISR, Free DQ, Power off peripheral clock.  M
 
 i2c_err_t i2cWrite(i2c_t * i2c, uint16_t device_address, uint8_t* write_buffer, uint16_t write_size, bool sendStop, uint16_t ticks_to_wait){
     if((i2c==NULL)||((write_size>0)&&(write_buffer==NULL))) { // need to have location to store requested data
+        ESP_LOGE(TAG,"%s:%s\n",__func__,"I2C_ERROR_DEV");
         return I2C_ERROR_DEV;
     }
     esp_err_t err = ESP_OK;
@@ -150,8 +151,10 @@ i2c_err_t i2cWrite(i2c_t * i2c, uint16_t device_address, uint8_t* write_buffer, 
 end:
     i2c_cmd_link_delete_static(handle);
     if(err == ESP_ERR_TIMEOUT) {
+        ESP_LOGE(TAG,"%s:%s\n",__func__,"I2C_ERROR_TIMEOUT");
         i2c_err = I2C_ERROR_TIMEOUT;
     } else if (err != ESP_OK){
+        ESP_LOGE(TAG,"%s:%s\n",__func__,"I2C_ERROR_DEV");
         i2c_err = I2C_ERROR_DEV;
     }
     return i2c_err;
@@ -160,6 +163,7 @@ end:
 i2c_err_t i2cRead(i2c_t * i2c, uint16_t device_address, uint8_t* read_buffer, uint16_t read_size, bool sendStop, uint16_t ticks_to_wait, uint32_t *readCount){
 
     if((read_size == 0)||(i2c == NULL)||(read_buffer==NULL)){ // hardware will hang if no data requested on READ
+        ESP_LOGE(TAG,"%s:%s\n",__func__,"I2C_ERROR_DEV");
         return I2C_ERROR_DEV;
     }
 
@@ -210,8 +214,10 @@ end:
         *readCount = read_size;
     }
     if(err == ESP_ERR_TIMEOUT) {
+        ESP_LOGE(TAG,"%s:%s\n",__func__,"I2C_ERROR_TIMEOUT");
         i2c_err = I2C_ERROR_TIMEOUT;
     } else if (err != ESP_OK){
+        ESP_LOGE(TAG,"%s:%s\n",__func__,"I2C_ERROR_DEV");
         i2c_err = I2C_ERROR_DEV;
     }
     return i2c_err;
@@ -219,8 +225,8 @@ end:
 esp_err_t IRAM_ATTR i2c_hw_fsm_reset(i2c_port_t i2c_num);
 i2c_err_t i2cFlush(i2c_t *i2c){
 
-    // return i2c_hw_fsm_reset(i2c->num);
-    return I2C_ERROR_OK;
+    return i2c_hw_fsm_reset(i2c->num);
+    //return I2C_ERROR_OK;
 }
 
 i2c_err_t i2cSetFrequency(i2c_t * i2c, uint32_t clk_speed){
