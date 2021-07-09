@@ -226,12 +226,14 @@ end:
     }
     return i2c_err;
 }
-esp_err_t IRAM_ATTR i2c_hw_fsm_reset(i2c_port_t i2c_num);
-i2c_err_t i2cFlush(i2c_t *i2c){
+// i2c_err_t i2cFlush(i2c_t *i2c){
 
-    return i2c_hw_fsm_reset(i2c->num);
-    //return I2C_ERROR_OK;
-}
+//     if(i2c==NULL) {
+//         return I2C_ERROR_DEV;
+//     }
+//     // TODO:
+//     return I2C_ERROR_OK;
+// }
 
 i2c_err_t i2cSetFrequency(i2c_t * i2c, uint32_t clk_speed){
     i2c->cfg.master.clk_speed = clk_speed;
@@ -249,6 +251,7 @@ uint32_t i2cGetFrequency(i2c_t * i2c){
 
 //stickbreaker debug support
 uint32_t i2cDebug(i2c_t *i2c, uint32_t setBits, uint32_t resetBits){
+    // TODO:
     return ESP_OK;
 }
 

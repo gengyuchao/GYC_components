@@ -109,7 +109,7 @@ bool TwoWire::begin(int sdaPin, int sclPin, uint32_t frequency)
         return false;
     }
 
-    // flush();
+    flush();
     return true;
 
 }
@@ -276,7 +276,7 @@ void TwoWire::flush(void)
     txLength = 0;
     rxQueued = 0;
     txQueued = 0;
-    i2cFlush(i2c); // cleanup
+    // i2cFlush(i2c); // cleanup
 }
 
 uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity, uint8_t sendStop)
