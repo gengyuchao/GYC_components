@@ -32,8 +32,8 @@ extern "C" {
 
 #include "Wire.h"
 
-#define SDA 10
-#define SCL 11
+#define SDA 8
+#define SCL 9
 
 #include "esp_log.h"
 #define log_e(...) ESP_LOGE("WIRE",__VA_ARGS__)
@@ -276,7 +276,7 @@ void TwoWire::flush(void)
     txLength = 0;
     rxQueued = 0;
     txQueued = 0;
-    i2cFlush(i2c); // cleanup
+    // i2cFlush(i2c); // cleanup
 }
 
 uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity, uint8_t sendStop)
