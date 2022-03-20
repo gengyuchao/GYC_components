@@ -109,7 +109,7 @@ bool TwoWire::begin(int sdaPin, int sclPin, uint32_t frequency)
         return false;
     }
 
-    flush();
+    // flush();
     return true;
 
 }

@@ -110,6 +110,7 @@ void i2cRelease(i2c_t *i2c){// free ISR, Free DQ, Power off peripheral clock.  M
 i2c_err_t i2cWrite(i2c_t * i2c, uint16_t device_address, uint8_t* write_buffer, uint16_t write_size, bool sendStop, uint16_t ticks_to_wait){
     if((i2c==NULL)||((write_size>0)&&(write_buffer==NULL))) { // need to have location to store requested data
         ESP_LOGE(TAG,"%s:%s\n",__func__,"I2C_ERROR_DEV");
+        ESP_LOGE(TAG,"i2c:%p,write_size:%d,write_buffer:%p\n",i2c,write_size,write_buffer);
         return I2C_ERROR_DEV;
     }
     esp_err_t err = ESP_OK;
@@ -154,6 +155,7 @@ end:
         ESP_LOGE(TAG,"%s:%s\n",__func__,"I2C_ERROR_TIMEOUT");
         i2c_err = I2C_ERROR_TIMEOUT;
     } else if (err != ESP_OK){
+        ESP_LOGE(TAG,"%s:%s\n",__func__,esp_err_to_name(err));
         ESP_LOGE(TAG,"%s:%s\n",__func__,"I2C_ERROR_DEV");
         i2c_err = I2C_ERROR_DEV;
     }
@@ -164,6 +166,7 @@ i2c_err_t i2cRead(i2c_t * i2c, uint16_t device_address, uint8_t* read_buffer, ui
 
     if((read_size == 0)||(i2c == NULL)||(read_buffer==NULL)){ // hardware will hang if no data requested on READ
         ESP_LOGE(TAG,"%s:%s\n",__func__,"I2C_ERROR_DEV");
+        ESP_LOGE(TAG,"i2c:%p,read_size:%d,read_buffer:%p\n",i2c,read_size,read_buffer);
         return I2C_ERROR_DEV;
     }
 
@@ -217,6 +220,7 @@ end:
         ESP_LOGE(TAG,"%s:%s\n",__func__,"I2C_ERROR_TIMEOUT");
         i2c_err = I2C_ERROR_TIMEOUT;
     } else if (err != ESP_OK){
+        ESP_LOGE(TAG,"%s:%s\n",__func__,esp_err_to_name(err));
         ESP_LOGE(TAG,"%s:%s\n",__func__,"I2C_ERROR_DEV");
         i2c_err = I2C_ERROR_DEV;
     }
