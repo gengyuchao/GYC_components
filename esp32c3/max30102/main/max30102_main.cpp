@@ -48,7 +48,7 @@ extern "C" void app_main(void)
     if (!particleSensor.begin(Wire, I2C_SPEED_FAST)) //Use default I2C port, 400kHz speed
     {
         printf("MAX30105 was not found. Please check wiring/power. \n");
-        while (1);
+        while (1) vTaskDelay(1);
     }
 
     printf("Place your index finger on the sensor with steady pressure.\n");
@@ -59,6 +59,7 @@ extern "C" void app_main(void)
 
     while(1) {
         loop();
+        vTaskDelay(1);
     }
 
 }
@@ -88,13 +89,14 @@ void loop()
       beatAvg /= RATE_SIZE;
     }
   }
-
+  float temperature = particleSensor.readTemperature();
   printf("IR=");
   printf("%ld",irValue);
   printf(", BPM=");
   printf("%f",beatsPerMinute);
   printf(", Avg BPM=");
   printf("%d",beatAvg);
+  printf(", tempe = %.4lf",temperature);
 
   if (irValue < 50000)
     printf(" No finger?");
